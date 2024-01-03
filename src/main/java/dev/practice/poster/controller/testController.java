@@ -1,12 +1,12 @@
 package dev.practice.poster.controller;
 
-import dev.practice.poster.config.CustomPasswordEncoder;
 import dev.practice.poster.dto.UserDTO;
 import dev.practice.poster.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 public class testController {
 
     private final UserService userService;
-    private final CustomPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public testController(UserService userService,
-                          CustomPasswordEncoder passwordEncoder){
+                          PasswordEncoder passwordEncoder){
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -42,7 +42,7 @@ public class testController {
         log.info("Start Saving " + userDTO.getUsername());
 
         userDTO.setPassword(passwordEncoder
-                .passwordEncoder().encode(userDTO.getPassword()));
+                .encode(userDTO.getPassword()));
 
         userService.save(userDTO);
 
