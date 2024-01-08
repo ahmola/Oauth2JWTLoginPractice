@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # poster
  practice for springboot oauth2 login and etc
 =======
