@@ -23,6 +23,11 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    public List<CustomUser> findAll(){
+        log.info(UserService.class.getName() + " start findAll()");
+        return userRepository.findAll();
+    }
+
     public CustomUser save(UserDTO userDTO){
         log.info("Create " + userDTO.toString());
         return userRepository.save(new CustomUser(userDTO));
