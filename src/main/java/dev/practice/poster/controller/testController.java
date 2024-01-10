@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/test")
+@RequestMapping("/api/user")
 public class testController {
 
     private final UserService userService;

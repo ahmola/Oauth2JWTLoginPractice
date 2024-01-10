@@ -1,6 +1,6 @@
 package dev.practice.poster.model;
 
 public enum Role {
-    ADMIN,
-    USER
+    ROLE_ADMIN,
+    ROLE_USER
 }

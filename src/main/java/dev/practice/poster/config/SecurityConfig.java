@@ -7,7 +7,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import dev.practice.poster.utility.RsaKeyProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +30,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -39,6 +40,11 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public CustomAuthenticationEntryPoint customAuthenticationEntryPoint(){
+        return new CustomAuthenticationEntryPoint();
     }
 
     @Bean
@@ -56,20 +62,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception{
         return http
+                    .csrf(AbstractHttpConfigurer::disable)
+                    .headers(header -> {
+                        header.frameOptions().disable();
+                        header.httpStrictTransportSecurity().disable();
+                    })
+                    .sessionManagement(session ->
+                            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .authorizeHttpRequests(auth ->{
                         auth.requestMatchers("/api/auth/**").permitAll();
                         auth.requestMatchers("/api/admin/**").hasRole("ADMIN");
                         auth.requestMatchers("/api/user/**").hasAnyRole("ADMIN", "USER");
+                        auth.anyRequest().authenticated();
                     })
-                    .csrf(AbstractHttpConfigurer::disable)
-                    .headers(header -> header.frameOptions().disable())
-                    .httpBasic(Customizer.withDefaults())
                     .oauth2ResourceServer(OAuth2Resourceserver -> {
                             OAuth2Resourceserver.jwt(jwt -> jwt.decoder(jwtDecoder()));
                             OAuth2Resourceserver.jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
                     })
-                    .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                    .httpBasic(Customizer.withDefaults())
                     .build();
     }
 

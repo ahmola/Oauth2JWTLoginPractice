@@ -1,6 +1,5 @@
 package dev.practice.poster.controller;
 
-import dev.practice.poster.dto.LoginRequestDTO;
 import dev.practice.poster.dto.LoginResponseDTO;
 import dev.practice.poster.dto.UserDTO;
 import dev.practice.poster.model.CustomUser;
@@ -10,9 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -28,6 +26,11 @@ public class AuthenticationController {
     ){
         this.userService = userService;
         this.authenticationService = authenticationService;
+    }
+
+    @GetMapping
+    public String helloUser(){
+        return "Go";
     }
 
     @PostMapping("/register")
