@@ -11,8 +11,8 @@ logging:
 spring:
   datasource:
     url: jdbc:mysql://localhost/poster
-    username: "root"
-    password: youngseo0@
+    username:
+    password:
   jpa:
     hibernate:
       ddl-auto: update
