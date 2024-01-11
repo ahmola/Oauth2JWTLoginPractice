@@ -9,13 +9,6 @@ logging:
         security: TRACE
 
 spring:
-  security:
-    oauth2:
-      client:
-        registration:
-          github:
-            clientId: 99c3f9ea45ae383e4494
-            clientSecret: 275b07103c06d2c5f1eba4bfca1a3b8892823688
   datasource:
     url: jdbc:mysql://localhost/poster
     username: "root"
